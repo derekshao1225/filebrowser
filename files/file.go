@@ -63,6 +63,9 @@ func NewFileInfo(opts FileOptions) (*FileInfo, error) {
 	}
 
 	file, err := stat(opts)
+	if file.IsDir {
+		file.Size = file.DirSize(0)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -339,4 +342,15 @@ func (i *FileInfo) readListing(checker rules.Checker, readHeader bool) error {
 
 	i.Listing = listing
 	return nil
+}
+
+func (s *FileInfo) DirSize(size int64) int64 {
+	for _, f := range s.Items {
+		if f.IsDir {
+			size += f.DirSize(0)
+		} else {
+			size += f.Size
+		}
+	}
+	return size
 }
