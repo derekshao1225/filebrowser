@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func TestFileInfo_DirSize(t *testing.T) {
+func TestFileInfo_GetSize(t *testing.T) {
 	type fields struct {
 		Listing   *Listing
 		Fs        afero.Fs
@@ -76,7 +76,7 @@ func TestFileInfo_DirSize(t *testing.T) {
 				Checksums: tt.fields.Checksums,
 				Token:     tt.fields.Token,
 			}
-			if got := s.DirSize(tt.args.size); got != tt.want {
+			if got := s.GetSize(tt.args.size); got != tt.want {
 				t.Errorf("DirSize() = %v, want %v", got, tt.want)
 			}
 		})
